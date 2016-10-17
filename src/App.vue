@@ -11,20 +11,46 @@
         <router-link to="/users" class="item" active-class="active" exact>
           Users
         </router-link>
+        <div class="right menu">
+          <div class="item">
+              <div @click="toggleEditContentModal" class="ui primary button">+</div>
+          </div>
+          <div class="item">
+            <div class="ui transparent icon input">
+              <input type="text" placeholder="Search...">
+              <i class="search link icon"></i>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="ui fluid container">
-      <router-view></router-view>
-    </div>
+      <EditContentModal />
+      <div class="ui fluid container">
+        <router-view></router-view>
+      </div>
   </div>
 </template>
 
 <script>
 
+import EditContentModal from './components/EditContentModal';
+
+
 export default {
   components: {
-    
+    EditContentModal
+  },
+  methods: {
+    toggleEditContentModal: () => {
+      triggerModal()
+    }
   }
+}
+
+function triggerModal(){
+  $('.fullscreen.modal')
+    .modal('show')
+  ;
 }
 </script>
 
