@@ -52,7 +52,7 @@ export default {
     }
   },
   created: function () {
-    $.get('http://localhost:3333/api/v1/assets', (assets) => {
+    $.get('http://api.prysm.giantdev.com:3333/api/v1/assets', (assets) => {
       this.assets = assets;
     })
   },
