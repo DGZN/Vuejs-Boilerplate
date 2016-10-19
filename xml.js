@@ -9,18 +9,22 @@ class xmlParser {
     this.parser = new xml2js.Parser();
   }
 
-  parse (path) {
+  parse (path, cb) {
     var self = this;
-    fs.readFile(path, function(err, data) {
-        self.parser.parseString(data, function (err, result) {
-            self.extract(result)
-        });
+    var file = fs.readFileSync(path);
+    self.parser.parseString(file.toString(), function (err, result) {
+      if ( ! result || ! result.package)
+        return console.error('error parsing path', path);
+      result.package.path = path
+      self.extract(result, cb)
     });
   }
 
-  extract (data) {
+  extract (data, cb) {
     var data = data.package;
     var video = data.video[0];
+    var path = data.path.split('/')
+    var imageName = path[path.length-1].replace('.xml', '')
     var payload = {
       title: video.title[0],
       guid: titleToGuid(video.title[0], video.theatrical_release_date[0]),
@@ -51,12 +55,21 @@ class xmlParser {
         target: 'hls',
         url: ''
       }],
-      images: []
+      images: [{
+        target: "poster",
+        size: "small",
+        url: "http://s3-us-west-2.amazonaws.com/giantott/thumbs/small/" + imageName + '_S.jpg'
+      },{
+        target: "poster",
+        size: "meidum",
+        url: "http://s3-us-west-2.amazonaws.com/giantott/thumbs/medium/" + imageName + '_M.jpg'
+      },{
+        target: "poster",
+        size: "large",
+        url: "http://s3-us-west-2.amazonaws.com/giantott/thumbs/large/" + imageName + '_L.jpg'
+      }]
     }
-    console.log(require('util').inspect({
-      msg: 'Extracting from JSON',
-      data: payload
-    }, { depth: null }));
+    return cb(payload);
   }
 
 }
@@ -93,9 +106,14 @@ function parseCast(cast){
   var members = [];
   for (var i in cast) {
     var person = cast[i];
+    if ( ! person.character_name ) {
+      var character = person.characters[0].character[0].character_name[0]
+    } else {
+      var character = person.character_name
+    }
     members.push({
       name: person.display_name[0],
-      character: person.characters[0].character[0].character_name[0]
+      character: character
     })
   }
   return members;
@@ -114,6 +132,4 @@ function parseCrew(crew){
   return members;
 }
 
-
-var parser = new xmlParser()
-parser.parse(__dirname + '/metadata.xml')
+module.exports = xmlParser;

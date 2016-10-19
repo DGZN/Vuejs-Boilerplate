@@ -12,6 +12,8 @@
     "test": "npm run unit && npm run e2e"
   },
   "dependencies": {
+    "mongoose": "^4.6.4",
+    "s3-uploader": "^2.0.2",
     "semantic-ui": "^2.2.4",
     "vue": "^2.0.1",
     "vue-router": "^2.0.1",
@@ -19,6 +21,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",
+    "aws-sdk": "^2.6.9",
     "babel-core": "^6.0.0",
     "babel-loader": "^6.0.0",
     "babel-plugin-transform-runtime": "^6.0.0",

@@ -1,11 +1,11 @@
 <template>
   <div class="ui very padded text segment">
     <table class="ui table">
-      <thead v-show="false">
+      <thead>
         <tr>
           <th>Name</th>
-          <th>Status</th>
-          <th>Notes</th>
+          <th>Meta</th>
+          <th>Category</th>
         </tr>
       </thead>
       <tbody>
@@ -24,10 +24,13 @@
             </div>
             <h3 class="ui header">
               {{runtime(asset.runtime)}}
+              <a class="ui right label">
+                {{ asset.genres[0].name }}
+              </a
             </h3>
           </td>
           <td>
-
+            {{ asset.genres[0].name }}
           </td>
         </tr>
       </tbody>
@@ -49,7 +52,7 @@ export default {
     }
   },
   created: function () {
-    $.get('http://api.prysm.giantdev.com:3333/api/v1/feed', (assets) => {
+    $.get('http://localhost:3333/api/v1/assets', (assets) => {
       this.assets = assets;
     })
   },
@@ -75,6 +78,7 @@ export default {
 
 <style scoped>
 tr {
+  position: relative;
   vertical-align: top;
 }
 tr > td {
