@@ -400,10 +400,20 @@ export default {
       return roles.join(', ')
     },
     save: function () {
-      console.log("Saving")
-      console.log(require('util').inspect({
-        asset: this.asset
-      }, { depth: null }));
+      var self = this;
+      setTimeout(function(){
+        var id = self.asset['_id'];
+        var asset = self.asset;
+        delete asset['_id']
+        jQuery.ajax({
+          type: 'put',
+          url: "http://api.prysm.giantdev.com:3333/api/v1/assets/" + id,
+          data: JSON.stringify(asset),
+          success: function(xhr) {
+            console.log(require('util').inspect(xhr, { depth: null }));
+          }
+        });
+      }.bind(this), 500)
     }
   }
 
