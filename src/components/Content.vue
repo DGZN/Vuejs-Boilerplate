@@ -96,7 +96,7 @@ export default {
       var url = images[0].url;
       images.map((image) => {
         if (image.size
-            && image.size == 'small')
+            && image.size == 'medium')
         url = image.url;
       })
       return url;
