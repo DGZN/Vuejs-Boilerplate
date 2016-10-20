@@ -15,12 +15,6 @@
           <div class="item">
               <div @click="toggleEditContentModal" class="ui primary button">+</div>
           </div>
-          <div class="item">
-            <div class="ui transparent icon input">
-              <input type="text" placeholder="Search...">
-              <i class="search link icon"></i>
-            </div>
-          </div>
         </div>
       </div>
     </div>
