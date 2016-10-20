@@ -26,7 +26,7 @@
     </div>
       <EditContentModal />
       <div class="ui fluid container">
-        <router-view></router-view>
+        <router-view :settings="settings"></router-view>
       </div>
   </div>
 </template>
@@ -37,6 +37,13 @@ import EditContentModal from './components/EditContentModal';
 
 
 export default {
+  data () {
+    return {
+      settings: {
+        baseURI: 'http://api.prysm.giantdev.com:3333/'
+      }
+    }
+  },
   components: {
     EditContentModal
   },

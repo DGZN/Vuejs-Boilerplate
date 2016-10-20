@@ -13,7 +13,7 @@
               <a class="item" data-tab="details">Details</a>
               <a class="item" data-tab="assets">Assets</a>
               <a class="right item">
-                <i @click="save()" class="save icon"></i>
+                <i @click="save" class="save icon"></i>
               </a>
             </div>
             <div class="ui bottom attached tab segment active" data-tab="general">
@@ -286,6 +286,9 @@ ga('create', 'UA-84488578-1', 'auto');
 ga('send', 'pageview');
 
 export default {
+
+  props: ['settings'],
+
   data () {
     return {
       guid: this.$route.params.guid,
@@ -302,7 +305,7 @@ export default {
   },
 
   created () {
-    $.get('http://api.prysm.giantdev.com:3333/api/v1/assets', (assets) => {
+    $.get(this.settings.baseURI + '/api/v1/assets', (assets) => {
       this.assets = assets;
       var matched = '';
       assets.map((asset) => {
@@ -401,19 +404,24 @@ export default {
     },
     save: function () {
       var self = this;
-      setTimeout(function(){
-        var id = self.asset['_id'];
-        var asset = self.asset;
-        delete asset['_id']
-        jQuery.ajax({
-          type: 'put',
-          url: "http://api.prysm.giantdev.com:3333/api/v1/assets/" + id,
-          data: JSON.stringify(asset),
-          success: function(xhr) {
-            console.log(require('util').inspect(xhr, { depth: null }));
-          }
-        });
-      }.bind(this), 500)
+      var id = self.asset['_id'];
+      var asset = self.asset;
+      delete asset['_id']
+      var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": this.settings.baseURI + '/api/v1/assets/' + id,
+        "method": "POST",
+        "headers": {
+          "content-type": "application/json"
+        },
+        "processData": false,
+        "data": JSON.stringify(asset)
+      }
+
+      $.ajax(settings).done(function (xhr) {
+        this.asset = xhr.updated;
+      }.bind(this));
     }
   }
 

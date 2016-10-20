@@ -46,13 +46,16 @@
 
 <script>
 export default {
+
+  props: ['settings'],
+
   data () {
     return {
       assets: []
     }
   },
   created: function () {
-    $.get('http://api.prysm.giantdev.com:3333/api/v1/assets', (assets) => {
+    $.get(this.settings.baseURI + '/api/v1/assets', (assets) => {
       this.assets = assets;
     })
   },

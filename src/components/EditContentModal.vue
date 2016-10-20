@@ -3,7 +3,7 @@
     <i class="close icon"></i>
     <div class="ui text segment upload-panel">
 
-      
+
 
     </div>
     <div v-show="false" class="ui very padded text segment content">
@@ -86,16 +86,7 @@ export default {
   },
 
   created () {
-    $.get('http://api.prysm.giantdev.com:3333/api/v1/feed', (assets) => {
-      this.assets = assets;
-      var matched = '';
-      assets.map((asset) => {
-        if (asset.guid == this.guid) {
-          this.asset = asset;
-          this.playVideo(asset.videos[0].url)
-        }
-      })
-    })
+    
   },
 
   methods: {
