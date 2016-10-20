@@ -48,8 +48,8 @@
       </table>
     </div>
     <div v-show="view == 'panel'" class="ui padded text segment">
-      <div class="ui cards">
-        <div class="ui card" v-for="asset in assets" >
+      <div class="ui doubling cards">
+        <router-link :to="'/content/' + asset.guid" class="ui centered raised card" v-for="asset in orderedAssets">
           <div class="image">
             <img :src="thumb(asset.images)">
           </div>
@@ -66,7 +66,7 @@
               {{ asset.genres[0].name }}
             </a>
           </div>
-        </div>
+        </router-link>
         <!-- <div class="ui one wide card column" v-for="asset in assets" @click="routeTo(asset.guid)">
           <img :src="thumb(asset.images)" alt="" />
         </div> -->
@@ -86,6 +86,13 @@ export default {
       assets: []
     }
   },
+  computed: {
+    orderedAssets: function () {
+      return this.assets.sort((a, b) => {
+        return a.orderPriority - b.orderPriority;
+      })
+    }
+  },
   created: function () {
     $.get(this.settings.baseURI + '/api/v1/assets', (assets) => {
       this.assets = assets;
@@ -96,13 +103,20 @@ export default {
       var url = images[0].url;
       images.map((image) => {
         if (image.size
-            && image.size == 'medium')
+            && image.size == 'large')
         url = image.url;
       })
       return url;
     },
+    raise: function (asset) {
+      asset.raised = 'raised';
+      console.log("raising")
+    },
     runtime: function (seconds) {
       return Math.floor(seconds / 60) + ' Mins';
+    },
+    route: function (guid) {
+      return '/content/' + guid
     },
     routeTo: function (guid) {
       this.$router.push({ path: '/content/' + guid })
