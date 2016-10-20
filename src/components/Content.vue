@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <div class="ui text right aligned segment">
-      <select name="genreDropdown" multiple="" class="ui genres dropdown">
+      <select name="genreDropdown" multiple="" class="ui genres multiple selection dropdown">
         <option v-for="genre in genres" :value="genre.name">{{ genre.name }}</option>
       </select>
       <div class="view icons">
@@ -103,11 +103,14 @@ export default {
         var filters = this.filter.genres;
         this.assets.filter((asset) => {
           asset.genres.map((genre) => {
-            if (filters.indexOf(genre.name)>-1)
+            if (filters.indexOf(genre.name)>=0) {
               assets.push(asset)
+            }
           })
         })
-        return assets;
+        return assets.sort((a, b) => {
+          return a.orderPriority - b.orderPriority;
+        })
       }
     },
     genres: function () {
@@ -134,8 +137,13 @@ export default {
     $('.ui.dropdown')
       .dropdown('set text', 'Genres')
       .dropdown({
-        onChange: function(value, text, $selectedItem) {
-          self.filter.genres = value;
+        onAdd: (added) => {
+          if (this.filter.genres.indexOf(added)==-1)
+            this.filter.genres.push(added)
+        },
+        onRemove: (removed) => {
+          var genres = this.filter.genres;
+          this.filter.genres.splice(genres.indexOf(removed), 1)
         }
       })
     ;
