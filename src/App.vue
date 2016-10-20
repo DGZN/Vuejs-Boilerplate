@@ -40,7 +40,7 @@ export default {
   data () {
     return {
       settings: {
-        baseURI: 'http://api.prysm.giantdev.com:3333/'
+        baseURI: 'http://api.prysm.giantdev.com:3333'
       }
     }
   },
