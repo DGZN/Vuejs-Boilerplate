@@ -1,7 +1,7 @@
 <template>
   <div class="">
-    <div class="ui padded segment">
-      <div class="ui transparent icon large search input">
+    <div id="filter-panel" class="ui padded segment">
+      <div class="ui transparent icon search input">
         <input id="search" type="text" placeholder="Search...">
       </div>
       <div class="ui text right aligned filter ">
@@ -167,6 +167,15 @@
           }
         })
       ;
+      function scroll(e) {
+        var currentTop = $(window).scrollTop()
+        if (currentTop > 50) {
+          $('#filter-panel').addClass('fixed menu')
+        } else {
+          $('#filter-panel').removeClass('fixed menu')
+        }
+      }
+      window.onscroll = scroll;
     },
     methods: {
       match: function (title) {
