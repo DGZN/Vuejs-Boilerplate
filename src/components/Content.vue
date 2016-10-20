@@ -1,8 +1,13 @@
 <template>
   <div class="">
     <div class="ui text right aligned segment">
-      <i v-show="view == 'table'" @click="panelView()" class="ui browser icon"></i>
-      <i v-show="view == 'panel'" @click="tableView()" class="ui tasks icon"></i>
+      <select name="genreDropdown" multiple="" class="ui genres dropdown">
+        <option v-for="genre in genres" :value="genre.name">{{ genre.name }}</option>
+      </select>
+      <div class="view icons">
+        <i v-show="view == 'table'" @click="panelView()" class="ui browser icon"></i>
+        <i v-show="view == 'panel'" @click="tableView()" class="ui tasks icon"></i>
+      </div>
     </div>
     <div v-show="view == 'table'" class="ui padded text segment">
       <table class="ui table">
@@ -67,9 +72,6 @@
             </a>
           </div>
         </router-link>
-        <!-- <div class="ui one wide card column" v-for="asset in assets" @click="routeTo(asset.guid)">
-          <img :src="thumb(asset.images)" alt="" />
-        </div> -->
       </div>
     </div>
   </div>
@@ -82,21 +84,61 @@ export default {
 
   data () {
     return {
-      view: 'table',
+      view: 'panel',
+      filter: {
+        genres: []
+      },
       assets: []
     }
   },
   computed: {
     orderedAssets: function () {
-      return this.assets.sort((a, b) => {
+      var assets = this.assets.sort((a, b) => {
         return a.orderPriority - b.orderPriority;
       })
-    }
+      if (this.filter.genres.length==0) {
+        return assets;
+      } else {
+        var assets = [];
+        var filters = this.filter.genres;
+        this.assets.filter((asset) => {
+          asset.genres.map((genre) => {
+            if (filters.indexOf(genre.name)>-1)
+              assets.push(asset)
+          })
+        })
+        return assets;
+      }
+    },
+    genres: function () {
+      var sorted = [];
+      var genres = [];
+      this.assets.map((asset) => {
+        asset.genres.map((genre) => {
+          if (sorted.indexOf(genre.name)==-1) {
+            sorted.push(genre.name)
+            genres.push(genre)
+          }
+        })
+      })
+      return genres;
+    },
   },
   created: function () {
     $.get(this.settings.baseURI + '/api/v1/assets', (assets) => {
       this.assets = assets;
     })
+  },
+  mounted: function () {
+    var self = this;
+    $('.ui.dropdown')
+      .dropdown('set text', 'Genres')
+      .dropdown({
+        onChange: function(value, text, $selectedItem) {
+          self.filter.genres = value;
+        }
+      })
+    ;
   },
   methods: {
     thumb: function (images) {
@@ -107,10 +149,6 @@ export default {
         url = image.url;
       })
       return url;
-    },
-    raise: function (asset) {
-      asset.raised = 'raised';
-      console.log("raising")
     },
     runtime: function (seconds) {
       return Math.floor(seconds / 60) + ' Mins';
@@ -163,4 +201,13 @@ h3 {
 .icon {
   cursor: pointer;
 }
+
+.view.icons {
+  position: relative;
+  float: right;
+  margin-top: 0.8rem;
+  margin-right: 0.7rem;
+  margin-left: 2rem;
+}
+
 </style>
