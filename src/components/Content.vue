@@ -68,7 +68,7 @@
           </div>
           <div class="extra content">
             <a>
-              {{ asset.genres[0].name }}
+              {{ listGenres(asset.genres) }}
             </a>
           </div>
         </router-link>
@@ -152,6 +152,13 @@ export default {
     },
     runtime: function (seconds) {
       return Math.floor(seconds / 60) + ' Mins';
+    },
+    listGenres: function (obj) {
+      var genres = [];
+      obj.map((genre) => {
+        genres.push(genre.name)
+      })
+      return genres.join(', ');
     },
     route: function (guid) {
       return '/content/' + guid
