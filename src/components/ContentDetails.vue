@@ -307,7 +307,10 @@ export default {
           subscriberType: '',
           categoryTitle: ''
         },
-        images: []
+        images: [],
+        videos: [{
+          url: ''
+        }]
       },
       video: '',
       player: null
