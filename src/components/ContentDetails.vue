@@ -261,6 +261,16 @@
                       </div>
                     </div>
                   </div>
+                  <div class="ui one column stackable grid">
+                    <div class="ui form column">
+                      <div class="field">
+                        <label>Video URL</label>
+                        <div class="ui fluid input">
+                          <input type="text" placeholder="JW Platform Video URL..." v-model="asset.videos.[0].url">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
