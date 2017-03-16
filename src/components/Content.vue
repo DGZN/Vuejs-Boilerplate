@@ -157,7 +157,7 @@
       $('#search')
         .bind('input', function() {
           var keyword = $(this).val()
-          if ( keyword.length > 3 ) {
+          if ( keyword.length > 1 ) {
             self.keyword = keyword
           } else {
             self.keyword = ''
