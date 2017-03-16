@@ -19,7 +19,7 @@
         <tbody>
           <tr v-for="asset in assets" class="top aligned" @click="routeTo(asset.guid)">
             <td>
-              <img class="ui medium image" :src="thumb(asset.images)" alt="" />
+              <img class="ui small image" :src="thumb(asset.images)" alt="" />
             </td>
             <td>
               <h1 class="ui header">
