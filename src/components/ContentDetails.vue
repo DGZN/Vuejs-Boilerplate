@@ -13,7 +13,8 @@
               <a class="item" data-tab="details">Details</a>
               <a class="item" data-tab="assets">Assets</a>
               <a class="right item">
-                <i @click="save" class="save icon"></i>
+                <i v-show="editing" @click="save" class="save icon"></i>
+                <i v-show="! editing" @click="edit" class="edit icon"></i>
               </a>
             </div>
             <div class="ui bottom attached tab segment active" data-tab="general">
@@ -266,7 +267,8 @@
             </div>
             <div class="ui bottom attached tab segment" data-tab="assets">
                 <div class="preview-image" v-for="image in asset.images">
-                  <img :src="image.url" >
+                  <img class="ui fluid image" :src="image.url" :alt="image.url" :title="image.url" >
+                  <div class="ui divider"></div>
                 </div>
             </div>
           </div>
@@ -291,6 +293,7 @@ export default {
 
   data () {
     return {
+      editing: false,
       guid: this.$route.params.guid,
       asset: {
         tags: {
@@ -402,6 +405,9 @@ export default {
     formatRoles: function (roles) {
       return roles.join(', ')
     },
+    edit: function () {
+      this.editing = true;
+    },
     save: function () {
       var self = this;
       var id = self.asset['_id'];
@@ -421,6 +427,7 @@ export default {
 
       $.ajax(settings).done(function (xhr) {
         this.asset = xhr.updated;
+        this.editing = false;
       }.bind(this));
     }
   }

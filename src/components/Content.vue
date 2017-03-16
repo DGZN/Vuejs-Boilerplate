@@ -1,7 +1,7 @@
 <template>
   <div class="">
-    <div id="filter-panel" class="ui padded segment">
-      <div class="ui transparent icon search input">
+    <div id="filter-panel" class="ui segment">
+      <div class="ui transparent icon search small input">
         <input id="search" type="text" placeholder="Search...">
       </div>
       <div class="ui text right aligned filter ">
@@ -41,7 +41,7 @@
                 {{runtime(asset.runtime)}}
                 <a class="ui right label">
                   {{ asset.genres[0].name }}
-                </a
+                </a>
               </h3>
             </td>
             <td>
@@ -130,7 +130,11 @@
             }
           })
         })
-        return genres;
+        return genres.sort(function(a, b){
+          if(a.name < b.name) return -1;
+          if(a.name > b.name) return 1;
+          return 0;
+        });
       },
     },
     created: function () {
@@ -169,10 +173,14 @@
       ;
       function scroll(e) {
         var currentTop = $(window).scrollTop()
-        if (currentTop > 50) {
-          $('#filter-panel').addClass('fixed menu')
+        if (currentTop > 47) {
+          $('#filter-panel')
+            .addClass('fixed menu')
+            .css('opacity', '0.85')
         } else {
-          $('#filter-panel').removeClass('fixed menu')
+          $('#filter-panel')
+            .removeClass('fixed menu')
+            .css('opacity', '1')
         }
       }
       window.onscroll = scroll;
@@ -221,7 +229,7 @@
   }
 </script>
 
-<style scoped>
+<style>
   tr {
     position: relative;
     vertical-align: top;
@@ -256,25 +264,30 @@
 
   .filter {
     position: absolute;;
-    top: 0.68rem;
-    right: 2rem;
+    top: 0.55rem;
+    right: 0rem;
     float: right;
     display: block;
+  }
+
+  .label.tiny{
+    font-size: 52px !important;
   }
 
   .ui.label.tiny {
     font-size: 0.8em !important;
   }
 
-  .search.input {
-    width: 55% !important;
+  .ui.selection.dropdown {
+    border: 0px !important;
+    min-height: 0em !important;
   }
 
   .view.icons {
     position: relative;
     float: right;
-    margin-top: 0.8rem;
-    margin-right: 1.7rem;
+    margin-top: 0.65rem;
+    margin-right: 2.7rem;
     margin-left: 2rem;
   }
 </style>
