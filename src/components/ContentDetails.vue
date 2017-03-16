@@ -276,9 +276,8 @@
               </div>
             </div>
             <div class="ui bottom attached tab segment" data-tab="assets">
-                <div class="ui image" v-for="image in asset.images">
-                  <img  :src="image.url" :alt="image.url" :title="image.url" >
-                  <div class="ui bottom left attached label">{{ image.size }}</div>
+                <div class="preview-image" v-for="image in asset.images">
+                  <img class="ui image" :src="image.url" :alt="image.url" :title="image.url" >
                   <div class="ui divider"></div>
                 </div>
             </div>
